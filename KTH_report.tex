@@ -7,6 +7,9 @@
 \date{2018-28-01}
 \author{Seppich,Nicolas}
 
+\usepackage[backend=biber,sorting = none, style=numeric-comp, doi=false, isbn = false, url=false, giveninits=true]{biblatex}
+\bibliography{Bibliography.bib}
+
 \begin{document}
 
 \maketitle
@@ -126,5 +129,8 @@ and then approximate the function with remained coefficients at the equispaced g
 \end{equation}
 Again, the algorithm needed to be verified under realistic values and under a nonequispaced grid. A testclass with possible numbers of scenerios. 
 During the test cases with using error estimation techniques, it could be examined that the algorithm fulfilled the proclaimed purpose as long as the nonequispacing was not set to random
+
+\cite{Mungur1969}
+\printbibliography
 
 \end{document}
