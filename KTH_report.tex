@@ -48,25 +48,43 @@ Testing of new liners in the testing ricks, preparation of the liners, replacing
 \subsection{Postprocessing data obtained by the experiments}
 
 \subsubsection{Motivation/goals}
-The main goal of the data post processing step is to determine the impedance of the acoustic liners, since the impedance can be seen as the main acoustical characteristic of a technical component. This is done with the before mentioned complex relation between the wave number and the impedance. The developed algorithm is based on the Prony method, which recovers the signal parameters and therefore the wavenumber. This is done by using methods as the singular value decomposition of a genererated Hankelmatrix consisting of complex pressures, and the solution of an overdetermined Vandermode System. 
-As measured data is always accompanied by uncertainties, it is of high importance to fit the uncertainty analysis into the basic modelling process. Normally this is a problem of non-trivial kind based on the right assumptions. With the initial situation of only a few measurement points with quasi equispaced distances it is not possible to calculate uncertainties, since derivatives must be given in the following way: 
-To use uncertainties the assumption of slightly non equispaced sample points has to be made, were the equispaced neighburs are approximated by an algorithm. This enables us to calculate derivatives as well as to use the Prony methods, where an equispaced grid is a basic requirement.  
+The main goal of the data post processing step is to determine the impedance of the acoustic liners, since the impedance can be seen as the main acoustical characteristic of a technical component. This is done with the before mentioned complex relation between the wave number and the impedance. \\\\
+As measured data is always accompanied by uncertainties, it is also of high importance to fit the uncertainty analysis into the basic modelling process. Normally, this is a problem of non-trivial kind based on the right assumptions. With the initial situation of only a few measurement points with quasi equispaced distances it is not possible to calculate uncertainties, where derivatives in the following form are demanded:
+\begin{equation}
+u_{i}(q)= \left\vert \frac{\partial q}{\partial x_{i}} \right\vert u( x_{i})
+\end{equation}
+where $u_{i}(q)$ denotes the uncertainty in the desired quantity $q$ due to the uncertainty in $x_{i}$.
+\\
+\\
+Using the fact, that the microphone postitions are not perfectly equispaced, allows us to approximate the wanted function at equipaced steps. Thus, new data points are generated, which are not only necessary to calculate derivatives, but also to use the Prony method, where an equispaced grid is a basic requirement. 
+
+\subsubsection{Introduction to the Prony method}
+In this section, the already mentioned Prony method is shortly introduced, which aims to recover the signal parameters from noisy sampled data to determine the experimental impedance of the liners. So, the problem that we were faced to solve can be considered as a nonlinear approximation problem of the form: \\
+\begin{equation}\label{eqn: expsum}
+ p(x)=\sum\limits_{j=1}^M c_{j}e^{ik_{j}x} 
+\end{equation}
+\\
+where the pairwise different wavenumbers $k_{j}$ and complex coefficients $c_{j}$ are recovered. \\\\
+The problem is solved using methods like the singular value decomposition of a generated Hankelmatrix consisting of the complex pressures $p(x)$ and the solution of an overdetermined Vandermode System. The detailed implementation of the prony method was the main task of my colleague. Therefore, advanced tecnical information about the method are not going to be provided in this context. But nevertheless, it's essentiell to know the basic ideas of the method for a better understanding the subsequentiell steps. 
+
 
 \subsubsection{Equispacing algorithm}
-To develop the algorithm to approximate the function of complex pressures at equispaced positions and to understand the mathematical theory was basically my main task to be completed during the internship. It occupied also most of the time. The algorithm is based on the theories of the nonlinear approximation by sums of exponentials  by “Peter, Pots and Tasche”. \\\\
-To enhance the understanding of the sequential formulas, the main parameters of the algorithmn are going to be presented in the following:\\\\
+For the purpose to use the prony method precisely as well as using uncertainty estimates, it was necessary to implement an eqispacing algorithm.
+To develop this algorithm, which approximates the unknown function of complex pressures at equispaced positions and to understand the mathematical theory behind it, was basically my main task to be completed during the internship. It occupied also most of the time. The algorithm is based on the \textit{non linear approximation by sums of exponentials and translates}, by “Peter, Pots and Tasche”. \cite{Peter2011} \\\\
+To enhance the understanding of the sequential formulas, the main parameters of the algorithmn are going to be presented in the following:
+\\\\
  K: K is the number of nodes and therefore the number of rows in the following linear equation\\
  N: N is the nonharmonic Bandwidth\\
- L: L is the number of exponentials, with which the functions are approximated\\
-
-The basic idea of the algorithm is to approximate the function of obtained complex pressures at the non equispaced grid, i.e. on nodes $x_{k}(k=1,...,K)$ with an exponential sum. So it can be considered as a linear combination of complex exponentials.
-
+ L: L is the number of exponentials to approximate the function
+\\\\
+The basic idea of the algorithm is as before in equation \eqref{eqn: expsum} to approximate the function of obtained complex pressures with a linear combination of comlex exponentials.
+In this case, we generalize the equation \eqref{eqn: expsum} to a nonequispaced grid, i.e. on the known nodes $x_{k}\in (k=1,...,K)$ with the sampled data  $p(x_{k}) $
+\\
 \begin{equation}
- p(x)=\sum\limits_{j=1}^L c_{j}e^{2πixNs_{j}}
+ p(x)=\sum\limits_{j=1}^L c_{j}e^{2\pi ixNs_{j}}
 \end{equation}
 where N denotes the non harmonic bandwidths and with complex coefficients $c_{j}\neq0, x_{k} \in (-\frac{1}{2},\frac{1}{2})$
 \\
-
 But in order to recover the parameters of the sum,the signal must be brought into the form first:  
 \begin{equation}\label{eqn:truncatedw}
  p(x)=\sum\limits_{j=1}^L h_{l}\psi(x-\frac{l}{L})
@@ -74,7 +92,7 @@ But in order to recover the parameters of the sum,the signal must be brought int
 
 Where $\psi$ denotes the so called truncated window function with many helpful properties such as to be localised well in space and time, which will be discussed later more detailed. \\
 
-\paragraph{Window function} $ $\\[1ex]
+\paragraph{Window functions	} $ $\\[1ex]
 In general, a function is called a window function, which is zero valued outside a specific chosen interval. So as one can assume, there are quite a lot of possibilities to set up these window functions. For our case the 1- periodization of a gaussian bell, as proclaimed in the paper of Steidl seemed to provide good results to work on with. It is of the form: 
 \\
 \\
@@ -129,7 +147,7 @@ and then approximate the function with remained coefficients at the equispaced g
 \end{equation}
 Again, the algorithm needed to be verified under realistic values and under a nonequispaced grid. A testclass with possible numbers of scenerios. 
 During the test cases with using error estimation techniques, it could be examined that the algorithm fulfilled the proclaimed purpose as long as the nonequispacing was not set to random
-
+\cite{Peter2011}
 \cite{Mungur1969}
 \printbibliography
 
