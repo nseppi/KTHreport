@@ -1,13 +1,22 @@
-\documentclass{report}
+\documentclass[11pt]{report} % Dokumentenklasse
 
+\usepackage[utf8]{inputenc} % Textkodierung: UTF-8
+\usepackage[T1]{fontenc} % Zeichensatzkodierung
+
+\usepackage[ngerman]{babel} % Deutsche Lokalisierung
+\usepackage{graphicx} % Grafiken
+\usepackage[absolute]{textpos} % Positionierung
+
+% Schriftart Helvetica:
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{calc} % Berechnungen
+\usepackage{tabto} % Tabulatoren
+\usepackage{parskip}
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{xcolor}
-
-\title{research internship report}
-\date{2018-28-01}
-\author{Seppich,Nicolas}
-
 \usepackage[backend=biber,sorting = none, style=numeric-comp, doi=false, isbn = false, url=false, giveninits=true]{biblatex}
 \bibliography{Bibliography.bib}
 
@@ -20,7 +29,113 @@
 %\tikzexternalize[prefix=./tikz/]
 
 
+% Debugging:
+%\usepackage{layout} % Layout-Informationen
+%\usepackage{printlen} % Längenwerte ausgeben
+
+
+
+
+\title{research internship report}
+\date{2018-28-01}
+\author{Seppich,Nicolas}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% EINSTELLUNGEN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Seitenränder:
+\newcommand{\SeitenrandOben}{43.5mm}
+\newcommand{\SeitenrandRechts}{20mm}
+\newcommand{\SeitenrandLinks}{20mm}
+\newcommand{\SeitenrandUnten}{10mm}
+
+\newcommand{\UniversitaetLogoBreite}{19mm}
+\newcommand{\UniversitaetLogoHoehe}{1cm}
+
+\usepackage[a4paper,
+    top=\SeitenrandOben,
+    bottom=\SeitenrandUnten,
+    inner=\SeitenrandLinks,
+    outer=\SeitenrandRechts,
+    foot=0cm,
+    head=0cm
+]{geometry}
+
+\textblockorigin{\SeitenrandLinks}{\SeitenrandOben} % Ursprung für Positionierung
+
+\setlength{\parindent}{0pt}
+%\setlength{\baselineskip}{32pt}
+\setlength{\parskip}{\baselineskip}
+\TabPositions{4cm}
+\pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DOKUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \begin{document}
+
+
+\begin{textblock*}{\UniversitaetLogoBreite}[1,0](\textwidth-1mm, 2cm-\SeitenrandOben)%
+    \raggedleft\includegraphics{./Deckblatt/Ressourcen/Universitaet_Logo_RGB.pdf}%
+\end{textblock*}
+
+
+\begin{textblock*}{\textwidth}[0,0](0cm, 0cm)%
+{\fontsize{24pt}{26pt}\selectfont\textbf{\Titel}}
+
+\vspace*{14pt}
+{\fontsize{18pt}{27pt}\selectfont\textbf{\Untertitel}}
+\end{textblock*}
+
+\vspace*{92.2mm}
+\fontsize{15pt}{17.5pt}\selectfont%
+Wissenschaftliche Arbeit zur Erlangung des Grades\\
+\Grad\\
+an der \Fakultaet{} der Technischen Universität München.
+
+\renewcommand{\baselinestretch}{1.47}
+\normalsize\selectfont
+\vspace*{17.1mm}
+\textbf{Betreut von}\tab
+\begin{minipage}[t]{\textwidth-\CurrentLineWidth}
+\BetreutVonPerson\\
+\BetreutVonLehrstuhl\strut
+\end{minipage}
+
+\vspace*{4.3mm}
+\textbf{Eingereicht von}\tab
+\begin{minipage}[t]{\textwidth-\CurrentLineWidth}
+\EingereichtVon
+\end{minipage}
+
+\vspace*{-1mm}
+\textbf{Eingereicht am}\tab 
+\begin{minipage}[t]{\textwidth-\CurrentLineWidth}
+München, den \Datum\strut
+\end{minipage}
+
+\newpage
+
+\vspace*{-15.8mm}
+\fontsize{19pt}{21pt}\selectfont
+\ErklaerungUeberschrift
+
+\vspace{25.3mm}
+Erklärung
+
+\normalsize\selectfont
+\vspace{13.2mm}
+Ich versichere hiermit, dass ich die von mir eingereichte Abschlussarbeit selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.
+
+\vspace{18.1mm}
+\rule[-3.7mm]{\linewidth}{0.5pt}
+\Ort{}, \Datum{}, Unterschrift
+
+
 {\bf Style guide}
 \begin{itemize}
 \item Treat equations as sentences, that is end them with point or comma's, so that it integrates with the text.
@@ -214,7 +329,7 @@ When the factors $c_j$ and $k_j$ are known, they can be related to the acoustic 
 For the purpose to solve this problem, there is an algebraic solution, twhich is known as the prony methdod. But there are also various other prony like the Esprit method( Estimation of Signal Prarameters cia rotational Invariance Techniques) or the matrix pencil method described by \cite{Potts}.
 In order to calculate the algebraic solution, it is necessary, that the data is sampled at M*2 points, fulfills the Shannon-Nyquist theorem and that the data points are equispaced. 
 
-\section{Problem: facing uncertainties}
+\section{Problem: Facing uncertainties}
 As measured data is always accompanied by uncertainties, it is also of high importance to fit the uncertainty analysis into the basic modelling process.
 Normally, this is a problem of non-trivial kind based on the right assumptions.
 With the initial situation of only a few measurement points with quasi equispaced distances it is not possible to calculate uncertainties, where derivatives in the following form are demanded:
@@ -224,36 +339,58 @@ u_{i}(q)= \left\vert \frac{\partial q}{\partial x_{i}} \right\vert u( x_{i})
 where $u_{i}(q)$ denotes the uncertainty in the desired quantity $q$ due to the uncertainty in $x_{i}$.
 Using the fact, that the microphone postitions are not perfectly equispaced, allows us to approximate the wanted function at equipaced steps.
 Thus, new data points are generated, which are not only necessary to calculate derivatives, but also to use the Prony method, where an equispaced grid is a basic requirement.
+For these reasons an algorithm to approximate the function of complex pressure at an equispaced grid needed to be implemented. 
+  
+\chapter{Theory on the equispacing algorithm} 
+As already seen, the approximation of the complex pressure function at an equispaced grid poses a basic requirement for the prony method as well as for using uncertainty estimates on the experimental data.
+This is why, this chapter in particular focuses on the implementation and theories behind the equispacing algorithm, beginning with the basic ideas first followed by a detailed review. 
 
-\chapter{Theory} 
+\section{Basic ideas}
+The algorithm is based on the theory of \textit{non linear approximation by sums of exponentials and translates}, by \cite{Peter2011}.\\
+So basically the idea of the algorithm includes as before in equation \eqref{eqn: expsum} to first approximate the function of obtained complex pressures with a linear combination of complex exponentials.
+This makes the approximation to be of the same form as the fundamental solution of the wave equation in a rectangular duct.
+Then, assumptions about coefficients help to transform the problem into a linear system of equations. Solving this system in combination with using an equispaced grid lead to the approximation of the complex pressure. 
+In the following section the detailed ex
 
-\subsection{Postprocessing data obtained by the experiments}
+\subsection{Generalization of the approximation}
+In this case, we generalize the equation \eqref{eqn: expsum} to a nonequispaced grid, i.e. on the known nodes $x_{k}\in (-\frac{1}{2},..,\frac{1}{2})$ for k $\in{1,..., K}$ with the measured data  $p(x_{k}) $
 
-\subsubsection{Motivation/goals}
+\begin{equation}
+ p(x_{k})=\sum\limits_{j=1}^M c_{j}e^{2\pi ix_{k}Ns_{j}}
+\end{equation}
+with complex coefficients $c_{j} \neq 0$
+\\
+Note that $2 \pi Ns_j \in{-\pi N,\pi N}$ are the frequencies of $p(x)$
 
-{\color{red} Move this after the Prony  }
+\subsection{Approximation of the coefficients $c_j$ and determination of the coefficients $p_l$}
+In a second step, the complex coefficients $c_j$ are approximated by the fourier transform of a window function, which will be explained later on in deail. 
+This transforms the equation to: 
 
-\subsubsection{Equispacing algorithm}
-{\color{red} Here you don't have to write what your task was, this should be written in the very beginning. You should here make it clear that you implemented the algorithm by Peter and explain the functioning of the algorithm. Try to write this as clear as you can, you should be the expert by now! (Otherwise the reader will wonder what you have done or really understand if you can't explain it clear}
-For the purpose to use the prony method precisely as well as using uncertainty estimates, it was necessary to implement an eqispacing algorithm. 
+\begin{equation}
+\sum\limits_{j=1}^L p_{l}\psi(x_{k}-\frac{l}{L})=p(x_{k})\label{eqn: linear system}
+\end{equation}
 
-The algorithm is based on the \textit{non linear approximation by sums of exponentials and translates}, by “Peter, Pots and Tasche”. \cite{Peter2011} 
+
+In a third step, the parameters $p_l$ are going to be recovered solving the linear equation for all nodes.
+
+\subsection{Approximation at the non equispaced grid}
+With the obtained coefficients, the approximation will be completed adapting equispaced parameters into the equation (\eqref{eqn: linear system}): 
+
+\begin{equation}
+ \sum\limits_{j=1}^L h_{l}\varphi(x'_{k}-\frac{l}{L})=p(x'_{k})\notag
+\end{equation}
+
+
+ 
+
+
 
 To enhance the understanding of the sequential formulas, the main parameters of the algorithmn are going to be presented in the following:
-\\\\
+
  K: K is the number of nodes and therefore the number of rows in the following linear equation\\
  N: N is the nonharmonic Bandwidth\\
  L: L is the number of exponentials to approximate the function
-\\\\
-The basic idea of the algorithm is as before in equation \eqref{eqn: expsum} to approximate the function of obtained complex pressures with a linear combination of comlex exponentials.
-In this case, we generalize the equation \eqref{eqn: expsum} to a nonequispaced grid, i.e. on the known nodes $x_{k}\in (k=1,...,K)$ with the sampled data  $p(x_{k}) $
-\\
-\begin{equation}
- p(x)=\sum\limits_{j=1}^M c_{j}e^{2\pi ixNs_{j}}
-\end{equation}
 
- with complex coefficients $c_{j}\neq0, x_{k} \in (-\frac{1}{2},\frac{1}{2})$
-\\
 
 But in order to recover the parameters of the sum,the signal must be brought into the form first:  
 \begin{equation}\label{eqn:truncatedw}
@@ -381,4 +518,8 @@ During the test cases with using error estimation techniques, it could be examin
 \includegraphics[width = 0.8\textwidth]{./Figures/FlowProfile_Large}
 \caption{Test 123}
 \end{figure}
+
+
 \end{document}
+
+
