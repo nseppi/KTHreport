@@ -551,6 +551,56 @@ p(x'_{k})= \sum\limits_{j=1}^L h_{l}\varphi(x'_{k}-\frac{l}{L}) \notag
 
 
 \chapter{Results and conclusion}
+In this chapter, the results concerning the usage of the equispacing algorithm are going to be outlined in detail. 
+The first section is devoted to the reconstruction of the function of complex pressure.
+Here, we aim to compare the two before mentioned variations of the equispacing algorithm, with or without the truncated window function. 
+Whereas the second section deals with the results of applying the algorithm to experimental data using uncertainty estimates. 
+ 
+\section{Numerical experiments}
+Since two different variations of the equispacing algorithm exist, it was a necessary step to analyse the numerical behaviour of both variants.
+A test class with possible numbers of scenerios equations was implemented, where the  
+algorithm could be verified under realistic acoustical waves and under a nonequispaced grid.
+In essence, the test makes use of a simple known steady wave equation of the form
+
+\begin{equation}
+p(x)= \sum e^{kx},
+\end{equation}
+
+where the test data is obtained inserting a non equispaced grid. 
+The equispaced grid is randomly generated but is kept in a specific range such as 10 percent of the step size. 
+Applying now the algorithm to this test data and comparing the obtained results with the known function values delivers the approximation error in the complex domain.
+
+\subsection{Results of the truncated window function}
+In the following plot the results using the truncated window function can be examined. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{./Figures/plot_trunc}
+\caption{results of using the truncated window function with the parameters $b=12.3$ and $m=3$ as proclaimed in \citep{Peter2011}}
+\end{figure}
+
+This example shows in the first row the reconstructed function of complex pressures approximated at equispaced steps, separated in real and complex part. 
+Here, it is quite difficult to distinguish between the the test function and the the approximated function. 
+Therefore, a plot is shown in the second row displaying the error between the test function and the approximated function. 
+According to plot the error is smaller than $10^2$, which provides quite a robust result for an non equispaced grid of 5 percent deviations, which is displayed in the last row.
+
+
+\subsection{Results of a single Gaussian bell}
+In comparison to the first plot, the second plot provides information about the numerical properties of using a single Gaussian bell using the same equispaced grid as before.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{./Figures/plot_trunc}
+\caption{results of using the gaussian bell with the parameters for $b=12.3$}
+\end{figure}
+
+This plot shows as the first example the reconstructed function of complex pressures approximated at equispaced steps, separated in real and complex part.
+As before, the numerical errors are quite small.
+In this case ten times smaller than before. 
+So, the single Gaussian bell provides even better results than the truncated version. 
+
+
+\section{Experimental experiments}
 \paragraph{Results using the truncated window function} $ $ \\[1ex]
 In the following, the results of this specific method are going to be discussed.
 The parameters where chosen by formulas presented by Peter: \\
@@ -561,7 +611,7 @@ So, using the truncated window function in this specific case was not the optima
 
 \paragraph{Approximation with a single Gaussian Bell}  $ $ \\[1ex]
 
-Again, the algorithm needed to be verified under realistic values and under a nonequispaced grid. A testclass with possible numbers of scenerios. 
+Again, t
 During the test cases with using error estimation techniques, it could be examined that the algorithm fulfilled the proclaimed purpose as long as the nonequispacing was not set to random {\color{red} If you have information on the limitations of the mind, include it! This will strengthen your belief that it works for the cases for which we are using the algorithm for}
 
 
