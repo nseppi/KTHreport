@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc} % Textkodierung: UTF-8
 \usepackage[T1]{fontenc} % Zeichensatzkodierung
 
-\usepackage[ngerman]{babel} % Deutsche Lokalisierung
+%\usepackage[ngerman]{babel} % Deutsche Lokalisierung
 \usepackage{graphicx} % Grafiken
 \usepackage[absolute]{textpos} % Positionierung
 
@@ -15,7 +15,7 @@
 \usepackage{tabto} % Tabulatoren
 \usepackage{parskip}
 \usepackage{amsfonts}
-\usepackage{amsmath}
+\usepackage{amsmath,array,bm,mathtools}
 \usepackage{xcolor}
 \usepackage[backend=biber,sorting = none, style=numeric-comp, doi=false, isbn = false, url=false, giveninits=true]{biblatex}
 \bibliography{Bibliography.bib}
@@ -74,8 +74,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DOKUMENT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\Titel}{%
-    Titel der Arbeit}
+\newcommand{\Titel}{Measuring the acoustical impedance of liners using non equispaced prony like methods  }
 \newcommand{\Untertitel}{%
     Untertitel}
 \newcommand{\Grad}{%
@@ -99,6 +98,15 @@
     Ort}
 \newcommand{\Datum}{%
     Datum}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Commands for matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
 
 \begin{document}
 
@@ -184,13 +192,6 @@ Ich versichere hiermit, dass ich die von mir eingereichte Abschlussarbeit selbst
         \end{itemize}
 \end{itemize}
 
-
-\maketitle
-\pagenumbering{gobble}
-\newpage
-\pagenumbering{arabic}
-
-\setcounter{secnumdepth}{5}
 \chapter{Preface}
 \section{Motivation}
 Studying at university at undergraduate level usually means to a lot of students to study most of the time on a pure theoretical basis.
@@ -207,13 +208,13 @@ As a member of a team of 3, I could also benefit from the expertise of my collea
 
 \subsection{Gathering of information concerning acoustics } 
 The first days of the internship were used to acquire the demanded knowledge about acoustics, its governing equations and its methodologies.
-In order to fulfil this purpose, the main task was to read several books such as 1, 2, 3 and gather serveral articles concering the topic of acoustics, especially in flow acoustics. 
-After a short period, I realized, that flow acoustics govers the combination of different subjects, which I already passed at TUM such as continuum mechanics, signal processing, control theory and thermodynamics.
+In order to fulfil this purpose, the main task was to read several books such as 1, 2, 3 and gather several articles concerning the topic of acoustics, especially in flow acoustics. 
+After a short period, I realized, that flow acoustics governs the combination of different subjects, which I already passed at TUM such as continuum mechanics, signal processing, control theory and thermodynamics.
 With the acquired knowledge I was able to pass on to the main tasks. 
 
 \subsection{Conduction of measurement series}
 As I also participated in measurement series, several tasks needed to be fulfilled.
-This included the preparation of the test setup, preparation of the acoustical liners, callibration of the microphones and the conduction of test with or without flow.
+This included the preparation of the test set-up, preparation of the acoustical liners, calibration of the microphones and the conduction of test with or without flow.
 Conducting these different steps in a specific order helped me to get a better understanding in how scientific tests are organized and which details need to be considered in order to get precise results. 
 
 \subsection{Development of the equispacing algorithm}
@@ -371,62 +372,43 @@ This is why, this chapter in particular focuses on the implementation and theori
 
 \section{Basic ideas}
 The algorithm is based on the theory of \textit{non linear approximation by sums of exponentials and translates}, by \cite{Peter2011}.\\
-So basically the idea of the algorithm includes as before in equation \eqref{eqn: expsum} to first approximate the function of obtained complex pressures with a linear combination of complex exponentials.
+So basically the idea behind the algorithm includes as before in equation \eqref{eqn: expsum} to first approximate the function of obtained complex pressures with a linear combination of complex exponentials.
 This makes the approximation to be of the same form as the fundamental solution of the wave equation in a rectangular duct.
 Then, assumptions about coefficients help to transform the problem into a linear system of equations. Solving this system in combination with using an equispaced grid lead to the approximation of the complex pressure. 
-In the following section the detailed ex
+Using this approximation, the Prony method can be used to restore the wave numbers to determine the liners impedance adapting the before mentioned complex relation between wavenumber and impedance \ref{eqn: Impdet1} 
+In the following sections the algorithm with its specific steps will be explained more in detail. 
 
-\subsection{Generalization of the approximation}
-In this case, we generalize the equation \eqref{eqn: expsum} to a nonequispaced grid, i.e. on the known nodes $x_{k}\in (-\frac{1}{2},..,\frac{1}{2})$ for k $\in{1,..., K}$ with the measured data  $p(x_{k}) $
+\section{Generalization of the approximation with exponential sums}
+As in the Prony method, we aim to approximate the function of complex pressures with a linear combination of exponentials.
 
 \begin{equation}
- p(x_{k})=\sum\limits_{j=1}^M c_{j}e^{2\pi ix_{k}Ns_{j}}
+ p(x)=\sum\limits_{j=1}^M c_{j}e^{ik_{j}z} 
+\end{equation}
+
+
+\begin{equation} \label{eqn: nonequi exp}
+ p(x_{k})=\sum\limits_{j=1}^M c_{j}e^{2\pi ix_{k}Ns_{j}} 
 \end{equation}
 with complex coefficients $c_{j} \neq 0$
-\\
-Note that $2 \pi Ns_j \in{-\pi N,\pi N}$ are the frequencies of $p(x)$
 
-\subsection{Approximation of the coefficients $c_j$ and determination of the coefficients $p_l$}
-In a second step, the complex coefficients $c_j$ are approximated by the fourier transform of a window function, which will be explained later on in deail. 
-This transforms the equation to: 
+Note that $2 \pi Ns_j \in{-\pi N,\pi N}$ are the frequencies of $p(x)$.
 
-\begin{equation}
-\sum\limits_{j=1}^L p_{l}\psi(x_{k}-\frac{l}{L})=p(x_{k})\label{eqn: linear system}
-\end{equation}
+Basically the goal of the algorithm is to determine the important coefficients fitting the linear combination of exponentials.
+Therefore further assumptions about the coefficients are needed.  
 
-
-In a third step, the parameters $p_l$ are going to be recovered solving the linear equation for all nodes.
-
-\subsection{Approximation at the non equispaced grid}
-With the obtained coefficients, the approximation will be completed adapting equispaced parameters into the equation (\eqref{eqn: linear system}): 
+\section{Approximation of the coefficients $\bm{c_j}$ and determination of the coefficients $\bm{p_l}$}
+In a second step of the algorithm, the complex coefficients $c_j$ are approximated by the Fourier transform of a so called window function from space to the wavenumber domain: 
 
 \begin{equation}
- \sum\limits_{j=1}^L h_{l}\varphi(x'_{k}-\frac{l}{L})=p(x'_{k})\notag
+c_{k} (\varphi) \coloneqq \int_{-\frac{1}{2}}^{\frac{1}{2}} \varphi (x) e^{-2 \pi kx} dx         
+k \in \mathbb{N}
 \end{equation}
 
-
- 
-
-
-
-To enhance the understanding of the sequential formulas, the main parameters of the algorithmn are going to be presented in the following:
-
- K: K is the number of nodes and therefore the number of rows in the following linear equation\\
- N: N is the nonharmonic Bandwidth\\
- L: L is the number of exponentials to approximate the function
-
-
-But in order to recover the parameters of the sum,the signal must be brought into the form first:  
-\begin{equation}\label{eqn:truncatedw}
- p(x)=\sum\limits_{j=1}^M h_{l}\psi(x-\frac{l}{L})
-\end{equation}
-
-Where $\psi$ denotes the so called truncated window function with many helpful properties such as to be localised well in space and time, which will be discussed later more detailed. \\
-
-\paragraph{Window functions	} $ $\\[1ex]
+\subsection{Window function}
+In the section before, we introduced the term window function.
 In general, a function is called a window function, which is zero valued outside a specific chosen interval.
-So as one can assume, there are quite a lot of possibilities to set up these window functions.
-For our case the 1- periodization of a gaussian bell, as proclaimed in the paper of Steidl seemed to provide good results to work on with.
+So, as one can assume, there are quite a lot of possibilities to set up these window functions.
+For our case the 1- periodization of a gaussian bell, as proclaimed in the paper of \cite{Peter2011} seemed to provide good results to work on with.
 It is of the form: 
 
 For a fixed $b>0$ and L let:
@@ -445,20 +427,111 @@ with $1<m < \frac{L}{2}$ and
       1, & \text{otherwise}
     \end{cases}\notag
 \end{equation} 
-The question arose, why do we need to truncat the Gaussian bell? In the end, this is a mathematical trick to be well localized in space and time, which allows further mathematical proofs, that are not examined in this report further on.
+The question arose, why do we need to truncate the Gaussian bell? In the end, this is a mathematical trick to be well localized in space and time, which allows further mathematical proofs, that are not examined in this report further on.
 
-So, after setting up the truncated window function we are able to solve the linear systems of equations of this form:
+In this particular case, we generalize this equation to a nonequispaced grid, i.e. on the known microphone positions $x_{k}\in (-\frac{1}{2},..,\frac{1}{2})$ for k $\in{1,..., K}$ and with the measured pressure at these positions.  $p(x_{k}) $
+
+
+\subsection{Determination of the coefficients $\bm{p_l}$}
+To represent the governing exponentials, we will use the coefficients $p_l$ with $l \in{1,..,M}$    
+This transforms in combination with the window function the equation \eqref{eqn: nonequi exp} to: 
+
 \begin{equation}
-\sum\limits_{j=1}^L h_{l}\psi(x_{k}-\frac{l}{L})=p(x_{k})
-\end{equation}
-This can be written in a linear system of equations, which can be solved easily. {\color{red} You could write the matrix equation, just to make it easier to follow}
-Here, we aim to examine the coefficients $h_{l}$, which will be used in the second step to approximate the function on the equispaced grid at the specific positions.
-The grid can be equalized, using a simple algorithm, which examines the average step size and generates a new grid with this information.
-With all coefficients $h_{l}$ and equipspaced positions $x'_{l}$ it is now possible to examine to approxiamte the complex pressure at the equispaced grid. 
+p(x_{k})=\sum\limits_{l=1}^M p_{l}\psi(x_{k}-\frac{l}{L})\label{eqn: linear system}
+\end{equation}.
+
+Here, we aim to determine the coefficients $p_l$, since the coefficients $p_l$ are the last unknown coefficients and represent the unknown exponentials describing the the function of complex pressures.
+So, in a third step, the parameters $p_l$ are going to be recovered solving the linear equation for all nodes of the following form: 
 \begin{equation}
- \sum\limits_{j=1}^M h_{l}\psi(x'_{k}-\frac{l}{L})=p(x'_{k})\notag
+\bm{p(x)} = \bm{\Psi (x)} \bm{p}
 \end{equation}
 
+with the  vector $\bm{p(x)} \in \mathbb{C}^{K \times 1}$ providing information about the measured pressures at the non equispaced grid, the matrix $,\bm{\Psi (x)} \in \mathbb{C}^{K \times M}$ containing the window functions for the nodes  and the target vector of coefficients $\bm{p} \in \mathbb{C}^{M \times 1}$.
+Specifically, this can be expressed as: 
+
+\[
+\begin{bmatrix}
+	p(x_1) \\
+	p(x_2) \\
+	\vdots\\
+	p(x_K)
+\end{bmatrix} = 
+\begin{bmatrix}
+    \psi(x_{1}-\frac{1}{L})& \psi(x_{1}-\frac{2}{L})& \dots & \psi(x_{1}-\frac{M}{M}) \\
+    \psi(x_{2}-\frac{1}{L})& \psi(x_{2}-\frac{2}{L})& \dots & \psi(x_{2}-\frac{M}{M}) \\
+    \vdots &  &\ddots & \vdots \\
+    \psi(x_{K}-\frac{1}{L})& \psi(x_{K}-\frac{2}{L})& \dots & \psi(x_{K}-\frac{M}{M}) \\   
+\end{bmatrix}
+\begin{bmatrix}
+    p_1 \\
+    p_2 \\
+    \vdots \\
+    p_{M}
+\end{bmatrix}
+\],
+
+which can be solved easily using MatLab tools.
+
+\section{Approximation at the non equispaced grid}
+In the last step, the function of complex pressures is approximated at equispaced nodes. The grid can be equispaced, using a simple algorithm, which examines the average step size and generates a new grid with this information.
+With the obtained coefficients $p_l$, the approximation will be completed adapting equispaced nodes into the equation \eqref{eqn: linear system}. 
+
+\begin{equation}
+ p(x'_{k})=\sum\limits_{j=1}^L h_{l}\varphi(x'_{k}-\frac{l}{L})=
+\end{equation}. 
+
+Again, this can be expressed as a matrix vector multiplication: 
+
+\[
+\begin{bmatrix}
+	p(x'_1) \\
+	p(x'_2) \\
+	\vdots\\
+	p(x'_K)
+\end{bmatrix} = 
+\begin{bmatrix}
+    \psi(x'_{1}-\frac{1}{L})& \psi(x'_{1}-\frac{2}{L})& \dots & \psi(x'_{1}-\frac{M}{M}) \\
+    \psi(x'_{2}-\frac{1}{L})& \psi(x'_{2}-\frac{2}{L})& \dots & \psi(x'_{2}-\frac{M}{M}) \\
+    \vdots &  &\ddots & \vdots \\
+    \psi(x'_{K}-\frac{1}{L})& \psi(x'_{K}-\frac{2}{L})& \dots & \psi(x'_{K}-\frac{M}{M}) \\   
+\end{bmatrix}
+\begin{bmatrix}
+    p_1 \\
+    p_2 \\
+    \vdots \\
+    p_{M}
+\end{bmatrix}
+\],
+
+where $\bm{p(x')}$ denotes the approximated function of complex pressures at the equispaced nodes. 
+
+\section{Variation of the algorithm using a single Gaussian bell}
+The major goal of the algorithm is to approximate the function of complex pressures as good as possible.
+Due to the fact, that every function can be approximated by almost any function, we slightly changed our starting function \eqref{eqn:truncatew} and simply used this form of the original Gaussian window function of a non 1- periodical form, since this trick was used to proof certain properties of the Gaussian.
+  
+\begin{equation}
+ p(x)=\sum\limits_{j=1}^L h_{l}\varphi(x-\frac{l}{L})
+\end{equation}
+
+with $\varphi$ is the orignal gaussian bell function: 
+
+\begin{equation}
+\varphi(x)= \frac{1}{\sqrt{\pi b}}  e^{x^2/b}
+\end{equation}
+
+where l denotes the shift parameter.
+In essence, the rest of the main algorithm remained basically the same.
+It is still the goal to deduce the coefficients $h_{l}$ by solving the linear system of equations: 
+\begin{equation}
+p(x_{k})=\sum\limits_{j=1}^L p_{l}\varphi(x_{k}-\frac{l}{L})
+\end{equation}
+and then approximate the function with remained coefficients at the equispaced grid: 
+\begin{equation}
+p(x'_{k})= \sum\limits_{j=1}^L h_{l}\varphi(x'_{k}-\frac{l}{L}) \notag
+\end{equation}
+
+
+\chapter{Results and conclusion}
 \paragraph{Results using the truncated window function} $ $ \\[1ex]
 In the following, the results of this specific method are going to be discussed.
 The parameters where chosen by formulas presented by Peter: \\
@@ -468,33 +541,10 @@ As the results show, the approximation of the function worked well within the do
 So, using the truncated window function in this specific case was not the optimal solution. \\[1ex]
 
 \paragraph{Approximation with a single Gaussian Bell}  $ $ \\[1ex]
-The major goal of the algorithm is to approximate the function of complex pressures as good as possible.
-Due to the fact, that every function can be approximated by almost any function, we slightly changed our startin function \eqref{eqn:truncatedw} {\color{red} Why? Explain!} and simply used this form of the original gaussian window function: 
-\begin{equation}
- p(x)=\sum\limits_{j=1}^L h_{l}\varphi(x-\frac{l}{L})
-\end{equation}
-with $\varphi$ is the orignal gaussian bell function: 
-\begin{equation}
-\varphi(x)= \frac{1}{\sqrt{\pi b}}  e^{x^2/b}
-\end{equation}
-where l denotes the shift parameter.
 
-In essence, the rest of the main algorithm remained basically the same.
-It is still the goal to deduce the coefficients $h_{l}$ by solving the linear system of equations: 
-\begin{equation}
-\sum\limits_{j=1}^L h_{l}\varphi(x_{k}-\frac{l}{L})=p(x_{k})
-\end{equation}
-and then approximate the function with remained coefficients at the equispaced grid: 
-\begin{equation}
- \sum\limits_{j=1}^L h_{l}\varphi(x'_{k}-\frac{l}{L})=p(x'_{k})\notag
-\end{equation}
 Again, the algorithm needed to be verified under realistic values and under a nonequispaced grid. A testclass with possible numbers of scenerios. 
 During the test cases with using error estimation techniques, it could be examined that the algorithm fulfilled the proclaimed purpose as long as the nonequispacing was not set to random {\color{red} If you have information on the limitations of the mind, include it! This will strengthen your belief that it works for the cases for which we are using the algorithm for}
-\cite{Peter2011}
-\cite{Mungur1969}
-\printbibliography
 
-\chapter{results and conclusion}
 
 \begin{figure}[b]% Reflection coefficient   
     \centering
@@ -542,6 +592,11 @@ During the test cases with using error estimation techniques, it could be examin
 \includegraphics[width = 0.8\textwidth]{./Figures/FlowProfile_Large}
 \caption{Test 123}
 \end{figure}
+
+
+\cite{Peter2011}
+\cite{Mungur1969}
+\printbibliography
 
 
 \end{document}
