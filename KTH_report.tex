@@ -1,5 +1,5 @@
-\documentclass[11pt]{report} % Dokumentenklasse
-
+\documentclass[11pt,draft]{report} % Dokumentenklasse
+\usepackage[nomargin,inline]{fixme}
 \usepackage[utf8]{inputenc} % Textkodierung: UTF-8
 \usepackage[T1]{fontenc} % Zeichensatzkodierung
 
@@ -202,7 +202,7 @@ During the 6 weeks of the internship, I could support the researchers and gain a
 
 \section{My field of activity} 
 As the duration of the research internship was limited to period of 6 weeks, I participated in many tasks supporting the researchers instead of completing a single separate task.
-These tasks are going to be explained in a detailed way in the following pages, but all in all encompassed the setup of experiments, research in literature, post processing the obtained data numerically with different methods and conducing uncertainty estimates.
+These tasks are going to be explained in a detailed way in the following pages, but all in all encompassed the setup of experiments, research in literature, post processing the obtained data numerically with different methods and conducting uncertainty estimates.
 I worked both practically in the laboratory and theoretically on fundamental theories of acoustics and maths.
 As a member of a team of 3, I could also benefit from the expertise of my colleagues as well as acquiring helpful skills in team working. 
 
@@ -218,12 +218,13 @@ This included the preparation of the test set-up, preparation of the acoustical 
 Conducting these different steps in a specific order helped me to get a better understanding in how scientific tests are organized and which details need to be considered in order to get precise results. 
 
 \subsection{Development of the equispacing algorithm}
-Basically my main task to be completed during the internship, was the development of an algorithmn to postprocess the data obtained by the measurement in a special way. 
+\fxnote{Use the word implementation rather than development, the algortihm was already described in the paper. Also in the text, it could be good to explain equispaced in words such that it is clear what is meant.}
+Basically my main task to be completed during the internship, was the development of an algorithm to postprocess the data obtained by the measurement in a special way. 
 The purpose of the implemented algorithm is to approximate a function at equispaced positions to meet the basic requirements for further postprocessing steps as determining the impedance numerically or using uncertainty estimate techniques to obtain reliable results.  
 In order to fulfill this specific purpose, I conducted quite a lot of literature research to understand the governing background theory in the field of nonlinear approximation.
 Several papers served as reference for the implementation of the algorithm. 
 Due to the complexity this specific task consumed most of time during the internship.
-In chapters 3 and 4 I will outline the algorithm and the obtained results in a more detailled way.
+In chapters 3 and 4 I will outline the algorithm and the obtained results in a more detailed way.
  
 \chapter{Introduction} 
 As acoustics is field of studies that bother our everyday lives, it is important to distinguish between wanted and unwanted acoustics.
@@ -232,43 +233,49 @@ Therefore, it is essential to develop efficient ways to reduce noise.
 
 \section{Acoustic liners for passive sound reduction}
 The research project, where I had the chance to get insights in during my internship, covered the topic of passive noise reduction methodologies with acoustic liners in aircraft engines.
-In general, acoustic liners are components to damp imcoming sound waves using the principle of Hemholz resonance to dissipate energy.
-In aircraft engines the aeroacustic liners are placed within the two critcal areas of the engine - in the inlet and in the outlet, where most of the noise is generated. 	 
+In general, acoustic liners are components to damp {\color{red} incoming} sound waves using the principle of Helmholtz resonance to dissipate energy.
+\fxnote{The above sentence is not completely correct. A Helmholtz resonator does not dissipate energy as it is a reactive element, however with flow acoustic energy is converted into flow energy. Furthermore, the optimum working of the liner is not based on the resonance frequency of the cavity, but on the so-called Cremer's impedance. When the liner has this impedance the damping is optimal, but it is not at the resonance frequency of the cavity.}
+
+In aircraft engines the aeroacoustic liners are placed within the two critical areas of the engine - in the inlet and in the outlet, where most of the noise is generated. 	 
 The principle set up of a liner consists of a porous or perforated top layer, a honeycomb structure and an impervious layer. 
 Since the fundamental principle of passive noise reduction with sound absorbing materials in liners has been used for a long time, the focus is set on the optimization of several set ups and liner designs.
 
 
 \section{The IMAGE project} 
-In aero- engines, single-layer and double-layer liners with perforate and mesh facing sheets are standard elemtents to reduce noise, but for the optimization of novel liner designs and novel materials more research is required to understand their acoustic impedance characteristics.
+In aero- engines, single-layer and double-layer liners with perforate and mesh facing sheets are standard elements to reduce noise, but for the optimization of novel liner designs and novel materials more research is required to understand their acoustic impedance characteristics.
 This is where the project IMAGE comes into play.
 The term IMAGE stands for Innovative Methodologies and technologies for reducing Aircraft noise Generation and Emission.
 In detail, the project aims to investigate noise reduction technologies in aircrafts both in a numerical and experimental way in order to develop robust methodologies in this particular field of study.  
 Whereas the main goal of the study conducted at the KTH at the Marcus Wallenberg Laboratory covers the characterization of the acoustical behaviour of porous materials in the reduction of fan noise in duct flow. 
-The obtained results provide the  basis references for further optimization steps of liners or for the further validation of numerical methods. 
+The obtained results provide the basis references for further optimization steps of liners or for the further validation of numerical methods. 
 
 \section{Characterisation of the impedance of liners in duct flows}
 The experiments conducted at the MWL aim to determine the impedance spectra and consequently the acoustical behaviour of acoustic liners embedded in the walls of aero- engines.
-Therefore, a model that simulates the sound spectrum of a fan in a duct flow is set up. 
+{\color{red} NOT CORRECT Therefore, a model that simulates the sound spectrum of a fan in a duct flow is set up.}
+\fxnote{The impedance is determined for a range of frequencies, which are not based on the sound spectrum of the fan, it should be of course have the same span as the sound spectrum of the fan}
 The measured pressure provides the basis for post processing steps like the prony method to examine parameters to deduce the impedance.
 In order to understand further relations, the experimental setup and fundamental theories are shortly introduced in this section. 
 
 
 \subsection{Experimental setup and measurements}
 In our case, the experimental setup consists mainly of a rectangular duct with the liners embedded into the wall.
-With the help of 16 microphones and two loud speakers, that generates the sound field of specific frequencies, the impedance of the liners can be deduced using an inverse analytical method.
+With the help of 16 microphones and two loud speakers, that generates a sound field at specific frequencies, the impedance of the liners can be deduced using an inverse analytical method.
 In this context, inverse analytical method means to deduce the acoustical impedance by measuring the sound field in a mean flow, in front of and after the lined section.
-Therefore, 3 microphones and one speaker are placed respectively in front of and after the lined section, whereas the remaining 10 microphones face the the liner.
+Therefore, 3 microphones and one speaker are placed respectively in front of and after the lined section, whereas the remaining 10 microphones face the liner.
 The method is a non destructive method ensuring the liners further usage.
-The governing relation between the measured pressures and how to determine the impedance is going to be presented more detailled later on. 
+The governing relation between the measured pressures and how to determine the impedance is going to be presented more detailed later on. 
 
 Graph Experimental setup
 	
 
 \subsection{The wave equation and its solutions}
+\fxnote{You should use the convected helmholtz equation, because in the current equations you don't take into account the effects of flow. }
+\fxnote{Give references to the literature where you have taken the equations from}
+\fxnote{You should introduce all the used variables when presenting an equation, for example what is $p$ and $t$ in the wave equation, what is $\omega$ etc.}
 Acoustic phenomena are based on wave propagation. As a consequence the coverning equation is called the wave equation and is of the form: 
 
 \begin{equation}
-\nabla^2p-\frac{1}{c^2}\frac{\partial^2p}{\partial^2t}
+    \nabla^2p-\frac{1}{c^2}\frac{\partial^2p}{\partial^2t} {\color{red} = 0}
 \end{equation}. 
 
 There are several ways to derive this partial differential equation including conservations laws like mass and momentum conservation, which are the fundamental equations in thermodynamics and mechanics. 
@@ -303,11 +310,11 @@ Using the boundary conditions
 \begin{equation}
 \left.\frac{\partial\hat{p}}{\partial x}\right\rvert_{x=0,x=a}=0
 \end{equation}
-
 \begin{equation}
 \left.\frac{\partial\hat{p}}{\partial y}\right\rvert_{y=0,x=b}=0
 \end{equation}
 
+\fxnote{Not correct, at one side of the wall $y=0$ the acoustic particle velocity is zero, but on the other side, $y=b$ the acoustic impedance is given, that is the ratio between the pressure and the acoustic particle velocity. See also the theory document} 
 leads to following restrictions on the wave numbers 
 
 \begin{equation}
@@ -318,6 +325,7 @@ k_{x,m}=\frac{m\pi}{a}
 k_{y,n}=\frac{n\pi}{b}
 \end{equation}
 
+\fxnote{Not correct when the right boundary conditions are been taken into account}
 where n and m denote the different modes of the solution to to wave equation. 
 Using this information and the assumption that the solution is of the form: 
 
@@ -325,11 +333,11 @@ Using this information and the assumption that the solution is of the form:
 \hat{p}(x,y,z,t)=p_{x}(x)p_{y}(y)p_{z}(z)e^{iwt}
 \end{equation}
 leads to the fundamental solution in rectangular ducts: 
-
 \begin{equation} \label{eqn:ductmodes}
 \hat{p}(x)=\sum\limits_{m=1}^\infty\sum\limits_{n=1}^\infty \epsilon_{n}\epsilon_{m}\cos(\frac{m\pi x}{a})\cos(\frac{n\pi y}{b})\left( p_{mn}^{+} e^{i(wt-k_{z,mn})}+p_{mn}^{-}e^{i(wt+k_{z,mn})} \right)
 \end{equation}
 
+\fxnote{Not correct when the right boundary conditions are taken into account, the formula only holds for a rectangular duct with all the walls rigid).
 where $\epsilon_{n}$ $\epsilon_{m}$ are the normalisation constants. 
 Consequently, the the equation can be separated into two parts. 
 The first part describes the shape of the oscillation in the ducts crosssection, whereas the second part describes the propagation term. 
@@ -342,7 +350,7 @@ p(x)=p^{-}e^{i(wt-kz)}+p^{+}e^{i(wt-kz)}
 
 \subsection{Relation between wavenumber and impedance}
 If the wavenumber $k_z$ is known,then the impedance $z_{ac}$ can be calculated with following relations:
-  
+\fxnote{This equation is the correct one when describing the wave numbers ($k_{y,n}$ in equation 2.8). When $z_{ac} \rightarrow \infty$ than this equation reduces to 2.8}
 \begin{equation}\label{eqn: Impdet1}
     k_y \tan 2k_y H = \frac{i \rho_0 c_0^2}{\omega z_{ac}} \left[k-M_zk_z\right]^2
 \end{equation}
@@ -358,6 +366,8 @@ These solutions are obtained using the considerations of a mean flow M whithin a
 
 
 \section{Introduction to the Prony method}
+\fxnote{You can move this part to the third chapter. The Prony method is not specifically related to the acoustic domain, it can also be used for different problems}
+
 In this section, the already mentioned Prony method is shortly introduced, which aims to recover the signal parameters from noisy sampled data to determine the experimental impedance of the liners.
 As shown before in equation (\eqref{eqn:ductmodes}) the acoustic field within the duct consists of acoustic modes. 
 Therefore, the Prony method takes a similar model into account, which is of the form: 
@@ -370,10 +380,13 @@ where M denotes the number of acoustical modes.
 So, the problem that the prony method faces  can be considered as a nonlinear approximation problem, where of the  pairwise different wavenumbers $k_{j}$ and complex coefficients $c_{j}$ are recovered.
 When the factors $c_j$ and $k_j$ are known, they can be related to the acoustic impedance with the previous equations (\ref{eqn: Impdet1})(\ref{eqn: Impdet2})
 For the purpose to solve this problem, there is an algebraic solution, twhich is known as the prony methdod. But there are also various other prony like the Esprit method( Estimation of Signal Prarameters cia rotational Invariance Techniques) or the matrix pencil method described by \cite{Potts}.
-In order to calculate the algebraic solution, it is necessary, that the data is sampled at M*2 points, fulfills the Shannon-Nyquist theorem and that the data points are equispaced. 
+\fxnote{Rewrite the above part, it is a bit messy}
+In order to calculate the algebraic solution, it is necessary, that the data is sampled at M*2 points, fulfills the Shannon-Nyquist theorem and that the data points are equispaced.
+\fxnote{What is M?}
+
 
 \section{Problem: Facing uncertainties}
-As measured data is always accompanied by uncertainties, it is also of high importance to fit the uncertainty analysis into the basic modelling process.
+As measured data is always accompanied by uncertainties, it is also of {\color{red} remove high} high importance to fit the uncertainty analysis into the basic modelling process.
 Normally, this is a problem of non-trivial kind based on the right assumptions.
 With the initial situation of only a few measurement points with quasi equispaced distances it is not possible to calculate uncertainties, where derivatives in the following form are demanded:
 
@@ -391,6 +404,7 @@ As already seen, the approximation of the complex pressure function at an equisp
 This is why, this chapter in particular focuses on the implementation and theories behind the equispacing algorithm, beginning with the basic ideas first followed by a detailed review. 
 
 \section{Basic ideas}
+\fxnote{This part is very unclear, we use the Prony method to get the wavenumbers of the modes that are present in the duct. However, this doesn't have to be in the basic idea as it is not related to the idea of the Prony method.}
 The algorithm is based on the theory of \textit{non linear approximation by sums of exponentials and translates}, by \cite{Peter2011}.\\
 So basically the idea behind the algorithm includes as before in equation \eqref{eqn: expsum} to first approximate the function of obtained complex pressures with a linear combination of complex exponentials.
 This makes the approximation to be of the same form as the fundamental solution of the wave equation in a rectangular duct.
@@ -399,6 +413,7 @@ Using this approximation, the Prony method can be used to restore the wave numbe
 In the following sections the algorithm with its specific steps will be explained more in detail. 
 
 \section{Generalization of the approximation with exponential sums}
+\fxnote{This part is unclear as well, what do the equations mean, are they the same? What is $N$ $s_j$?}
 As in the Prony method, we aim to approximate the function of complex pressures with a linear combination of exponentials.
 
 \begin{equation}
@@ -446,7 +461,7 @@ with $1<m < \frac{L}{2}$ and
       1, & \text{otherwise}
     \end{cases}\notag
 \end{equation} 
-The question arose, why do we need to truncate the Gaussian bell? In the end, this is a mathematical trick to be well localized in space and time, which allows further mathematical proofs, that are not examined in this report further on.
+The question arose, why do we need to truncate the Gaussian bell? In the end, {\color{red} Rewrite this, it is not a trick, it is true. Explain also why it is well localized in space and time} this is a mathematical trick to be well localized in space and time, which allows further mathematical proofs, that are not examined in this report further on.
 
 In this particular case, we generalize this equation to a nonequispaced grid, i.e. on the known microphone positions $x_{k}\in (-\frac{1}{2},..,\frac{1}{2})$ for k $\in{1,..., K}$ and with the measured pressure at these positions.  $p(x_{k}) $
 
@@ -525,8 +540,9 @@ Again, this can be expressed as a matrix vector multiplication:
 where $\bm{p(x')}$ denotes the approximated function of complex pressures at the equispaced nodes. 
 
 \section{Variation of the algorithm using a single Gaussian bell}
+
 The major goal of the algorithm is to approximate the function of complex pressures as good as possible.
-Due to the fact, that every function can be approximated by almost any function, we slightly changed our starting function \eqref{eqn:truncatew} and simply used this form of the original Gaussian window function of a non 1- periodical form, since this trick was used to proof certain properties of the Gaussian.
+Due to the fact, that every function can be approximated by almost any function, {\color{red} Is this true? And if so, from which reference did you take it?} we slightly changed our starting function \eqref{eqn:truncatew} and simply used this form of the original Gaussian window function of a non 1- periodical form, since this {\color{red} don't use the word trick in the report} trick was used to proof certain properties of the Gaussian.
   
 \begin{equation}
  p(x)=\sum\limits_{j=1}^L h_{l}\varphi(x-\frac{l}{L})
