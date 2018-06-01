@@ -244,7 +244,7 @@ In our case, the experimental setup consists mainly of a rectangular duct with t
 \includegraphics[scale=0.8]{./Figures/experimental_setup}
 \caption{Schematic experimental setup}
 \end{figure}
-
+\fxnote{Give a reference to the figure in the text somewhere}
 With the help of 16 microphones and two loud speakers, that generates a sound field at specific frequencies, the impedance of the liners can be deduced using an inverse analytical method.
 In this context, inverse analytical method means to deduce the acoustical impedance by measuring the sound field in a mean flow, in front of and after the lined section.
 Therefore, 3 microphones and one speaker are placed respectively in front of and after the lined section, whereas the remaining 10 microphones face the liner.
@@ -253,7 +253,6 @@ The governing relations between the measured pressures and how to determine the 
 
 
 \subsection{The wave equation and its solutions}
-\fxnote{You should use the convected helmholtz equation, because in the current equations you don't take into account the effects of flow. }
 \fxnote{Give references to the literature where you have taken the equations from}
 \fxnote{You should introduce all the used variables when presenting an equation, for example what is $p$ and $t$ in the wave equation, what is $\omega$ etc.}
 Acoustic phenomena are based on wave propagation. As a consequence the governing equation is called the wave equation and is of the form: 
@@ -266,7 +265,8 @@ Acoustic phenomena are based on wave propagation. As a consequence the governing
 
 There are several ways to derive this partial differential equation including conservations laws like mass and momentum conservation, which are fundamental equations in thermodynamics and mechanics.
 As the wave propagation is exposed to a duct flow in our case, further assumptions are necessary.
-We will extend the wave equation \eqref{eqn: waveeqn} with a flow term, assuming a a mean flow U in only one direction- in our case the z-direction. 
+We will extend the wave equation \eqref{eqn: waveeqn} with a flow term, assuming a a mean flow U in only one direction- in our case the z-direction.
+\fxnote{You didn't include the new figures in the commit, so I don't have them, but double check if your choice of reactangular basis is shown somewhere, so that it is clear what the $x$, $y$ and $z$ direction are.}
 This allows us to make use of the relatively simple linearized modified wave equation: 
 
 \begin{equation}
@@ -279,11 +279,11 @@ Using complex notation the convective Helmholz wave equation is given by
 \nabla^2 p - \left(ik +M\frac{\partial}{\partial z}\right)^2p = 0
 \end{equation},  
 
-where $k=\frac{w}{c}$ denotes the wave number, $/omega$ the angular speed and $M=\frac{U}{c}$ the Mach number. 
+where $k=\frac{w}{c}$ denotes the wave number, $\omega$ the angular speed and $M=\frac{U}{c}$ the Mach number. 
 
 The Helmholz equation has the general solution:
 \begin{equation}
-p(\textbf{x})=p^{-}e^{i(wt-k\textbf{x})}+p^{+}e^{i(wt-k\textbf{x})}
+p(\textbf{x},t)=p^{-}e^{i(\omega t-k\textbf{x})}+p^{+}e^{i(\omega t+k\textbf{x})}
 \end{equation}
 with x the propagation vector. 
 
@@ -309,6 +309,7 @@ Both equations can be separated in terms of the respective direction taking into
 The other terms can be considered as a constant. 
 Therefore,  solving the remaining ordinary differential equations with the boundary conditions
 
+\fxnote{Double check the second and third equation, they should involve the Y and X direction}
 \begin{subequations}
 \begin{align}
 \frac{1}{z}\frac{d^2Z}{dz^2}(1-M^2)-\frac{1}{Z}\frac{dZ}{dz}(2ikM)+k^2-k_x^2-k_y^2&=0 \label{eqn: Zdirec} \\
@@ -363,12 +364,12 @@ Solving the boundary conditions for the Ansatz for the solution in x and y direc
 \begin{subequations}
 \begin{align}
 X(x)&=A_xe^{ik_xx}+B_xe^{-ik_xx}\\
-y(x)&=A_ye^{ik_yy}+B_xe^{-ik_yy}
+Y(x)&=A_ye^{ik_yy}+B_xe^{-ik_yy}
 \end{align}
 \end{subequations}
  
 leads to following restrictions on the wave numbers: 
-
+\fxnote{This is only true for the hard wall cased, that is for the x-direction. The y-direction has the solution that is shown in the next equation}
 \begin{subequations}
 \begin{align}
 k_{x,m}&=\frac{m\pi}{W}\\
@@ -382,7 +383,7 @@ Solving the wave equation in y direction under the consideration of no reflectio
 \begin{equation}\label{eqn: Impdet1}
     k_y \tan 2k_y H = \frac{i \rho_0 c_0^2}{\omega z_{ac}} \left[k-M_zk_z\right]^2
 \end{equation}
-
+\fxnote{You should refer to the above equation}
 Using the experimental data $k_z$ is measured. 
 Then, from the first relation \ref{eqn: Impdet2} $k_y$ can be obtained under the consideration that the frequency is low enough that there are no modes in the $x$ direction $k_x = 0$, then with the second equation the acoustic impedance $z_ac$ can be obtained.
 
@@ -394,6 +395,7 @@ As shown before, the acoustical field in z direction is assumed to be of the exp
 \begin{equation}
 Z(z)\propto e^{-ik_z^j}
 \end{equation} 
+\fxnote{Explain the superscript $j$, or don't use it in this equation}
 Therefore, the Prony method also takes a similar model into account, which is of the form: 
 
 \begin{equation}\label{eqn: expsum}
@@ -403,6 +405,7 @@ Therefore, the Prony method also takes a similar model into account, which is of
 where M denotes the number of acoustical modes in z direction. 
 
 Summarizing, the prony method aims to recover analytically the pairwise different wavenumbers $k_z^{j}$ and complex coefficients $c_{j}$ of the acoustical modes present in the duct, given the function of complex pressures $p(z)$ at the microphone positions $z$.
+\fxnote{Is it true for this Shannon Nyquist theorem? Or does it just give rise to aliasing which can be fixed?}
 In order to calculate the algebraic solution, it is necessary, that first the spacing of the sampled pressure $p(z)$ fulfils the Shannon-Nyquist theorem $\frac{4\pi}{spacing}>k_z$ and second that the data points are provided at an equispaced grid.
 When the factors $c_j$ and $k_z^j$ are known, they can be related to the acoustic impedance with the previous equations (\ref{eqn: Impdet1})(\ref{eqn: Impdet2})
  
@@ -461,6 +464,7 @@ So, as one can assume, there are quite a lot of possibilities to set up these wi
 For our case the 1- periodization of a gaussian bell, as proclaimed in the paper of \cite{Peter2011} seemed to provide good results to work on with.
 It is of the form: 
 
+\fxnote{Can you state the requirements on b and L a bit more mathematically? Do they have to be real numbers, integers etc.}
 For a fixed $b>0$ and L let:
 \begin{equation}
 \varphi(x)= \frac{1}{\sqrt{\pi b}} \sum\nolimits_{r \in \mathbb{N}}  e^{(L(x+r))^2/b}
@@ -479,6 +483,7 @@ with $1<m < \frac{L}{2}$ and
 \end{equation} 
 The question arose, why do we need to truncate the Gaussian bell? 
 In the end, the truncation is used for further mathematical proofs to ensures that the window function is well localised in the space and frequency domain. 
+\fxnote{Is this really true? A non-truncated gaussian in the space domain gives a non-truncated gaussian in the fourier transformed domain. I have a feeling that this is not true for a truncated gaussian. Do you have a reference?}
 In the frequency domain the Gaussian Bell is of the form: 
 
 \begin{equation}
@@ -618,6 +623,7 @@ In the following plot the results using the truncated window function can be exa
 This example shows in the first row the reconstructed function of complex pressures approximated at equispaced steps, separated in real and complex part. 
 Here, it is quite difficult to distinguish between the the test function and the the approximated function. 
 Therefore, a plot is shown in the second row displaying the error between the test function and the approximated function. 
+\fxnote{I think you mean $10^{-2}$}
 According to plot the error is smaller than $10^2$, which provides quite a robust result for an non equispaced grid of 5 percent deviations, which is displayed in the last row.
 
 
@@ -637,6 +643,11 @@ So, the single Gaussian bell provides even better results than the truncated ver
 
 
 \section{Experimental experiments}
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{./Figures/UncertaintyFigure}
+\caption{Example of an uncertainty calculation of the impedance of a liner with flow.}
+\end{figure}
 
 \begin{figure}[b]% Reflection coefficient   
     \centering
@@ -681,7 +692,7 @@ So, the single Gaussian bell provides even better results than the truncated ver
 
 \begin{figure}
 \centering
-\includegraphics[width = 0.8\textwidth]{./Figures/FlowProfile_Large}
+\includegraphics[width = 0.3\textwidth]{./Figures/FlowProfile_Large}
 \caption{Test 123}
 \end{figure}
 
