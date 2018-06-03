@@ -1,4 +1,4 @@
-\documentclass[11pt,draft	]{report} % Dokumentenklasse
+\documentclass[11pt]{report} % Dokumentenklasse
 
 \usepackage[nomargin,inline]{fixme}
 \usepackage[utf8]{inputenc} % Textkodierung: UTF-8
@@ -236,14 +236,15 @@ In order to understand further relations, the experimental setup and fundamental
 
 \subsection{Experimental setup and measurements}
 In our case, the experimental setup consists mainly of a rectangular duct with the liners embedded into the wall.
+The following a will be graph be given outlining the schematic experimental setup. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{./Figures/experimental_setup}
 \caption{Schematic experimental setup}
 \end{figure}
-\fxnote{Give a reference to the figure in the text somewhere}
-With the help of 16 microphones and two loud speakers, that generates a sound field at specific frequencies, the impedance of the liners can be deduced using an inverse analytical method.
+
+With the help of the illustrated 16 microphones and two loud speakers, that generates a sound field at specific frequencies, the impedance of the liners can be deduced using an inverse analytical method.
 In this context, inverse analytical method means to deduce the acoustical impedance by measuring the sound field in a mean flow, in front of and after the lined section.
 Therefore, 3 microphones and one speaker are placed respectively in front of and after the lined section, whereas the remaining 10 microphones face the liner.
 The method is a non destructive method ensuring the liners further usage.
@@ -252,19 +253,17 @@ The governing relations between the measured pressures and how to determine the 
 
 \subsection{The wave equation and its solutions}
 \fxnote{Give references to the literature where you have taken the equations from}
-\fxnote{You should introduce all the used variables when presenting an equation, for example what is $p$ and $t$ in the wave equation, what is $\omega$ etc.}
 Acoustic phenomena are based on wave propagation. As a consequence the governing equation is called the wave equation and is of the form: 
 
 \begin{equation}
     \nabla^2p-\frac{1}{c^2}\frac{\partial^2p}{\partial^2t}  = 0 \label{eqn: waveeqn}
  \end{equation} 
  
- with the Pressure $p(x,y,z)$, the speed of sound $c$ and the time $t$
+with the pressure $p(x,y,z)$, the speed of sound $c$ and the time $t$
 
 There are several ways to derive this partial differential equation including conservations laws like mass and momentum conservation, which are fundamental equations in thermodynamics and mechanics.
 As the wave propagation is exposed to a duct flow in our case, further assumptions are necessary.
 We will extend the wave equation \eqref{eqn: waveeqn} with a flow term, assuming a a mean flow U in only one direction- in our case the z-direction.
-\fxnote{You didn't include the new figures in the commit, so I don't have them, but double check if your choice of reactangular basis is shown somewhere, so that it is clear what the $x$, $y$ and $z$ direction are.}
 This allows us to make use of the relatively simple linearized modified wave equation: 
 
 \begin{equation}
@@ -312,7 +311,7 @@ Therefore,  solving the remaining ordinary differential equations with the bound
 \begin{align}
 \frac{1}{z}\frac{d^2Z}{dz^2}(1-M^2)-\frac{1}{Z}\frac{dZ}{dz}(2ikM)+k^2-k_x^2-k_y^2&=0 \label{eqn: Zdirec} \\
 \left( \frac{d}{dx^2}+k_x^2\right)X(x)&=0 \label{eqn: Ydirec} \\
-\left( \frac{d}{dx^2}+k_x^2\right)X(x)&=0 \label{eqn: Xdirec}
+\left( \frac{d}{dy^2}+k_y^2\right)Y(y)&=0 \label{eqn: Xdirec}
 \end{align}
 \end{subequations} 
 
@@ -342,7 +341,7 @@ This leads to following relation:
 \end{equation}
 
 For the wavenumbers in x or the y direction the boundary conditions need to be taken into account as seen in the schematic of the cross section.
-In x direction, we assume the walls to be rigid resulting in:
+In x direction, we assume both walls to be rigid resulting in:
  
 \begin{equation}
 \left.\frac{\delta}{\delta x}X\right\rvert_{x=0,x=W}=0
@@ -351,49 +350,41 @@ In x direction, we assume the walls to be rigid resulting in:
 In y direction the boundary conditions differ as seen in the schematic. 
 Only on one side the boundary condition 
 \begin{equation}
-\left.\frac{\delta}{\delta x}X\right\rvert_{x=0,x=W}=0
+\left.\frac{\delta}{\delta y}Y\right\rvert_{y=0}=0
 \end{equation}
 
 holds.
 On the other side an acoustic impedance $z_{ac}$ is given.
-\fxnote{Not correct, at one side of the wall $y=0$ the acoustic particle velocity is zero, but on the other side, $y=b$ the acoustic impedance is given, that is the ratio between the pressure and the acoustic particle velocity. See also the theory document} 
 Solving the boundary conditions for the Ansatz for the solution in x and y direction of the form: 
 
 \begin{subequations}
 \begin{align}
 X(x)&=A_xe^{ik_xx}+B_xe^{-ik_xx}\\
-Y(x)&=A_ye^{ik_yy}+B_xe^{-ik_yy}
+Y(y)&=A_ye^{ik_yy}+B_xe^{-ik_yy}
 \end{align}
 \end{subequations}
  
-leads to following restrictions on the wave numbers: 
-\fxnote{This is only true for the hard wall cased, that is for the x-direction. The y-direction has the solution that is shown in the next equation}
-\begin{subequations}
-\begin{align}
-k_{x,m}&=\frac{m\pi}{W}\\
-k_{y,n}&=\frac{n\pi}{H}
-\end{align}
-\end{subequations}
+leads to following restriction on the wavenumber in x- direction: 
+\begin{equation}
+k_{x,m}=\frac{m\pi}{W}\\
+\end{equation}
 
-where n and m denote the so called acoustical modes of the solution to to wave equation.\\
-Solving the wave equation in y direction under the consideration of no reflections the relation to determine the impedance is obtained: 
+where the parameter n denotes the so called acoustical modes of the solution to to wave equation.\\
+Solving the wave equation in y direction under the consideration of no reflections and the boundary conditions, the relation to determine the impedance is obtained: 
 
 \begin{equation}\label{eqn: Impdet1}
     k_y \tan 2k_y H = \frac{i \rho_0 c_0^2}{\omega z_{ac}} \left[k-M_zk_z\right]^2
 \end{equation}
-\fxnote{You should refer to the above equation}
 Using the experimental data $k_z$ is measured. 
-Then, from the first relation \ref{eqn: Impdet2} $k_y$ can be obtained under the consideration that the frequency is low enough that there are no modes in the $x$ direction $k_x = 0$, then with the second equation the acoustic impedance $z_ac$ can be obtained.
+Then, from the first relation \ref{eqn: Impdet2} $k_y$ can be obtained under the consideration that the frequency is low enough that there are no modes in the $x$ direction $k_x = 0$, then with the second equation \ref{eqn: Impdet1} the acoustic impedance $z_ac$ can be obtained.
 
 \section{Introduction to the Prony method}
-\fxnote{You can move this part to the third chapter. The Prony method is not specifically related to the acoustic domain, it can also be used for different problems}
-
 In this section, the already mentioned Prony method is shortly introduced, which aims to recover the signal parameters $k_z$ from noisy sampled data to determine the experimental impedance of the liners as presented in the previous section.
 As shown before, the acoustical field in z direction is assumed to be of the exponential form:
 \begin{equation}
 Z(z)\propto e^{-ik_z^j}
-\end{equation} 
-\fxnote{Explain the superscript $j$, or don't use it in this equation}
+\end{equation}
+where j denotes the mode shapes in z-direction.
 Therefore, the Prony method also takes a similar model into account, which is of the form: 
 
 \begin{equation}\label{eqn: expsum}
@@ -403,8 +394,7 @@ Therefore, the Prony method also takes a similar model into account, which is of
 where M denotes the number of acoustical modes in z direction. 
 
 Summarizing, the prony method aims to recover analytically the pairwise different wavenumbers $k_z^{j}$ and complex coefficients $c_{j}$ of the acoustical modes present in the duct, given the function of complex pressures $p(z)$ at the microphone positions $z$.
-\fxnote{Is it true for this Shannon Nyquist theorem? Or does it just give rise to aliasing which can be fixed?}
-In order to calculate the algebraic solution, it is necessary, that first the spacing of the sampled pressure $p(z)$ fulfils the Shannon-Nyquist theorem $\frac{4\pi}{spacing}>k_z$ and second that the data points are provided at an equispaced grid.
+In order to calculate the algebraic solution with least effort, it is necessary, that first the spacing of the sampled pressure $p(z)$ fulfils the Shannon-Nyquist theorem $\frac{4\pi}{spacing}>k_z$ and second that the data points are provided at an equispaced grid.
 When the factors $c_j$ and $k_z^j$ are known, they can be related to the acoustic impedance with the previous equations (\ref{eqn: Impdet1})(\ref{eqn: Impdet2})
  
 Beside the prony methods exist various other prony like methods to recover the signal paramters like the Esprit method (Estimation of Signal Prarametersvcia rotational Invariance Techniques) or the matrix pencil method described by \cite{Potts}.
@@ -461,9 +451,7 @@ In general, a function is called a window function, which is zero valued outside
 So, as one can assume, there are quite a lot of possibilities to set up these window functions.
 For our case the 1- periodization of a gaussian bell, as proclaimed in the paper of \cite{Peter2011} seemed to provide good results to work on with.
 It is of the form: 
-
-\fxnote{Can you state the requirements on b and L a bit more mathematically? Do they have to be real numbers, integers etc.}
-For a fixed $b>0$ and L let:
+For a fixed $b \in \mathbb{R}^+$ and $L \in{\mathbb{N}}$ let:
 \begin{equation}
 \varphi(x)= \frac{1}{\sqrt{\pi b}} \sum\nolimits_{r \in \mathbb{N}}  e^{(L(x+r))^2/b}
 \end{equation}
@@ -480,14 +468,8 @@ with $1<m < \frac{L}{2}$ and
     \end{cases}\notag
 \end{equation} 
 The question arose, why do we need to truncate the Gaussian bell? 
-In the end, the truncation is used for further mathematical proofs to ensures that the window function is well localised in the space and frequency domain. 
-\fxnote{Is this really true? A non-truncated gaussian in the space domain gives a non-truncated gaussian in the fourier transformed domain. I have a feeling that this is not true for a truncated gaussian. Do you have a reference?}
-In the frequency domain the Gaussian Bell is of the form: 
-
-\begin{equation}
-\varphi(k)=\frac{1}{n}e^{-(\pi k/n)^2b}
-\end{equation}, 
-which is concentrated or well localised within a specific area. 
+In the end, the truncation is used for further mathematical proofs to ensures that the window function is well localised in space, since it is zero valued outside a specific interval.
+In general, the term well localised means, that a function is mainly concentrated within an interval and sufficiently small outside this interval.
 
 \subsection{Determination of the coefficients $\bm{p_l}$}
 To represent the governing exponentials, we will use the coefficients $p_l$ with $l \in{1,..,M}$    
@@ -609,7 +591,7 @@ where the test data is obtained inserting a non equispaced grid.
 The equispaced grid is randomly generated but is kept in a specific range such as 10 percent of the step size. 
 Applying now the algorithm to this test data and comparing the obtained results with the known function values delivers the approximation error in the complex domain.
 
-\subsection{Results of the truncated window function}
+\subsection{Results of using the truncated window function}
 In the following plot the results using the truncated window function can be examined. 
 
 \begin{figure}[H]
@@ -621,11 +603,10 @@ In the following plot the results using the truncated window function can be exa
 This example shows in the first row the reconstructed function of complex pressures approximated at equispaced steps, separated in real and complex part. 
 Here, it is quite difficult to distinguish between the the test function and the the approximated function. 
 Therefore, a plot is shown in the second row displaying the error between the test function and the approximated function. 
-\fxnote{I think you mean $10^{-2}$}
-According to plot the error is smaller than $10^2$, which provides quite a robust result for an non equispaced grid of 5 percent deviations, which is displayed in the last row.
+According to plot the error is smaller than $10^{-2}$, which provides quite a robust result for an non equispaced grid of 5 percent deviations, which is displayed in the last row.
 
 
-\subsection{Results of a single Gaussian bell}
+\subsection{Results of using a single Gaussian bell}
 In comparison to the first plot, the second plot provides information about the numerical properties of using a single Gaussian bell using the same equispaced grid as before.
 
 \begin{figure}[H]
@@ -640,59 +621,78 @@ In this case ten times smaller than before.
 So, the single Gaussian bell provides even better results than the truncated version. 
 
 
-\section{Experimental experiments}
+\section{Results of using uncertainty estimates on experimental data}
+As mentioned before, the implemented algorithm is supposed to fulfil two purposes. 
+Beside the reconstruction of the pressure function at equispaced positions, the generated data provides the base for uncertainty estimates on the calculated impedance of the acoustical liners. 
+Therefore, the equispacing algorithm could be included in the work of my colleague Luck Peerlings on uncertainty estimates \cite{Luck}. 
+This led to the following results: 
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{./Figures/UncertaintyFigure}
 \caption{Example of an uncertainty calculation of the impedance of a liner with flow.}
 \end{figure}
 
-\begin{figure}[b]% Reflection coefficient   
-    \centering
-    \begin{tikzpicture}[scale = 1]
-        \begin{axis}[
-                xlabel={Frequency [kHz]},
-                ylabel={$|\hat{\mathcal{R}}|$ [-]},
-                axis on top,
-                xmin = 0, xmax = 4,
-                ymin = 0.96, ymax = 1,
-                minor tick num = 5,
-                grid
-            ]
-            \addplot[
-                    color =  red,
-                    line width = 0.5,
-                ] 
-                table[x expr= \thisrow{f}/1000, y={mag} ] {./Data/UncertaintyAnalysis.txt};
-            \addplot[line width = 1] table[x expr= \thisrow{f}/1000, y={create col/linear regression={y=mag}}] {./Data/UncertaintyAnalysis.txt};
-        \end{axis}
-    \end{tikzpicture}
-    \begin{tikzpicture}[scale = 1]
-        \begin{axis}[
-                xlabel={Frequency [kHz]},
-                ylabel={$\angle \hat{\mathcal{R}}$ [deg]},
-                axis on top,
-                xmin = 0, xmax = 4,
-                ymin = -5, ymax = 5,
-                minor tick num = 5,
-                grid
-            ]
-            \addplot[
-                    color =  black!90,
-                    line width = 0.5,
-                ] 
-                table[x expr= \thisrow{f}/1000, y={phase} ] {./Data/UncertaintyAnalysis.txt};
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Measured reflection coefficient of the rigid plate. In blue the measured value and red gives the 95\% confidence intervals}
-    \label{fig:ReflCoeff}
-\end{figure} 
+This graph illustrates the determination of the acoustical impedance using uncertainty estimates with a specific level of confidence.
+The real part is shown on the left side, whereas the imaginary part is shown on the right side. 
 
-\begin{figure}
-\centering
-\includegraphics[width = 0.3\textwidth]{./Figures/FlowProfile_Large}
-\caption{Test 123}
-\end{figure}
+ 
+\section{Conclusion}
+On the scientific point of view, on may conclude, that the equispacing algorithm fulfils successfully the stated requirements and goals.
+It has been shown that it provides quite a robust solution to the approximation problem of a function given on a non equispaced grid. 
+Also, it has been shown that the algorithm is adaptable to often used uncertainty estimates on experimental data and thus provides additional information on the data.  
+Therefore, the equispacing algorithm can be successfully used in the framework of analysing the experimental data to determine the acoustical impedance. 
+
+On a personal point of view, the research internship has been a great experience to me.
+Beside discovering the interesting subject of acoustics, I could also benefit from the productive atmosphere given at the university and from the expertise of my colleagues. 
+I really enjoyed being part of great team and the interesting IMAGE project. 
+  
+%\begin{figure}[b]% Reflection coefficient   
+%    \centering
+%    \begin{tikzpicture}[scale = 1]
+%        \begin{axis}[
+%                xlabel={Frequency [kHz]},
+%                ylabel={$|\hat{\mathcal{R}}|$ [-]},
+%                axis on top,
+%                xmin = 0, xmax = 4,
+%                ymin = 0.96, ymax = 1,
+%                minor tick num = 5,
+%                grid
+%            ]
+%            \addplot[
+%                    color =  red,
+%                    line width = 0.5,
+%                ] 
+%                table[x expr= \thisrow{f}/1000, y={mag} ] {./Data/UncertaintyAnalysis.txt};
+%            \addplot[line width = 1] table[x expr= \thisrow{f}/1000, y={create col/linear regression={y=mag}}] {./Data/UncertaintyAnalysis.txt};
+%        \end{axis}
+%    \end{tikzpicture}
+%    \begin{tikzpicture}[scale = 1]
+%        \begin{axis}[
+%                xlabel={Frequency [kHz]},
+%                ylabel={$\angle \hat{\mathcal{R}}$ [deg]},
+%                axis on top,
+%                xmin = 0, xmax = 4,
+%                ymin = -5, ymax = 5,
+%                minor tick num = 5,
+%                grid
+%            ]
+%            \addplot[
+%                    color =  black!90,
+%                    line width = 0.5,
+%                ] 
+%                table[x expr= \thisrow{f}/1000, y={phase} ] {./Data/UncertaintyAnalysis.txt};
+%        \end{axis}
+%    \end{tikzpicture}
+%    \caption{Measured reflection coefficient of the rigid plate. In blue the measured value and red gives the 95\% confidence intervals}
+%    \label{fig:ReflCoeff}
+%\end{figure} 
+%
+%\begin{figure}
+%\centering
+%\includegraphics[width = 0.3\textwidth]{./Figures/FlowProfile_Large}
+%\caption{Test 123}
+%\end{figure}
 
 
 \cite{Peter2011}
