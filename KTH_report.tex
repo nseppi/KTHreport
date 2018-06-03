@@ -390,7 +390,6 @@ Therefore, the Prony method also takes a similar model into account, which is of
 \begin{equation}\label{eqn: expsum}
  p(x)=\sum\limits_{j=1}^M c_{j}e^{ik_z^jz} 
 \end{equation}
-
 where M denotes the number of acoustical modes in z direction. 
 
 Summarizing, the prony method aims to recover analytically the pairwise different wavenumbers $k_z^{j}$ and complex coefficients $c_{j}$ of the acoustical modes present in the duct, given the function of complex pressures $p(z)$ at the microphone positions $z$.
@@ -635,6 +634,8 @@ This led to the following results:
 
 This graph illustrates the determination of the acoustical impedance using uncertainty estimates with a specific level of confidence.
 The real part is shown on the left side, whereas the imaginary part is shown on the right side. 
+So this clarifies, that the algorithm provides a solution to include additional information to the experimental data like uncertainties.
+It is also adaptable to existing algorithms. 
 
  
 \section{Conclusion}
