@@ -19,6 +19,7 @@
 \usepackage{amsmath,array,bm,mathtools}
 \usepackage{xcolor}
 \usepackage[backend=biber,sorting = none, style=numeric-comp, doi=false, isbn = false, url=false, giveninits=true]{biblatex}
+\usepackage{filecontents}
 \bibliography{Bibliography.bib}
 
 \usepackage{pgfplots}
@@ -166,6 +167,10 @@ Research internship in the field of acoustics at the Markus Wallenberg Laborator
 \rule[-3.7mm]{\linewidth}{0.5pt}
 \Ort{}, \Datum{}, Signature
 
+\newpage
+\tableofcontents
+\newpage
+
 
 \chapter{Preface}
 \section{Motivation}
@@ -194,11 +199,11 @@ Conducting these different steps in a specific order helped me to get a better u
 
 \subsection{Implementation of the equispacing algorithm}
 \fxnote{Use the word implementation rather than development, the algortihm was already described in the paper. Also in the text, it could be good to explain equispaced in words such that it is clear what is meant.}
-Basically my main task to be completed during the internship, was the implementation of an algorithm to postprocess the data obtained by the measurement in a special way. 
+Basically my main task to be completed during the internship, was the implementation of an algorithm to  the data obtained by the measurement in a special way. 
 The purpose of the implemented algorithm is to approximate a function at equispaced positions. 
 Equispaced positions means in specific a grid of uniform step size. 
 The algorithm is necessary to meet the basic requirements for further postprocessing steps as determining the impedance numerically or using uncertainty estimate techniques to obtain reliable results.  
-In order to fulfill this specific purpose, I conducted quite a lot of literature research to understand the governing background theory in the field of nonlinear approximation.
+In order to fulfil this specific purpose, I conducted quite a lot of literature research to understand the governing background theory in the field of nonlinear approximation.
 Several papers served as reference for the implementation of the algorithm. 
 Due to the complexity this specific task consumed most of time during the internship.
 In chapters 3 and 4 I will outline the algorithm and the obtained results in a more detailed way.
@@ -211,13 +216,12 @@ Therefore, it is essential to develop efficient ways to reduce noise.
 \section{Acoustic liners for passive sound reduction}
 The research project, where I had the chance to get insights in during my internship, covered the topic of passive noise reduction methodologies with acoustic liners in aircraft engines.
 In general, acoustic liners are technical components to damp sound waves using the principle of the so called Cremer's impedance. 
-The Cremer's impedance is the optimal impedance, where locally reacting boundary conditions lead to a maximum attentuation of the lowest sound modes. \cite{Abom} 
+The Cremer's impedance is the optimal impedance, where locally reacting boundary conditions lead to a maximum attentuation of the lowest sound modes. \cite{Elnady2004} 
 More information about how to determine the Cremer's impedance will be provided in chapter 2.   
 
 In aircraft engines the aeroacoustic liners are placed within the two critical areas of the engine - in the inlet and in the outlet, where most of the noise is generated. 	 
 The principle set up of a liner consists of a porous or perforated top layer, a honeycomb structure and an impervious layer. 
 Since the fundamental principle of passive noise reduction with sound absorbing materials in liners has been used for a long time, i.e. for more than 50 years, the focus is set on the optimization of several set ups and liner designs.
-
 
 \section{The IMAGE project} 
 In aero- engines, single-layer and double-layer liners with perforate and mesh facing sheets are standard elements to reduce noise, but for the optimization of novel liner designs and novel materials more research is required to understand their acoustic impedance characteristics.
@@ -244,15 +248,14 @@ The following a will be graph be given outlining the schematic experimental setu
 \caption{Schematic experimental setup}
 \end{figure}
 
-With the help of the illustrated 16 microphones and two loud speakers, that generates a sound field at specific frequencies, the impedance of the liners can be deduced using an inverse analytical method.
+With the help of the illustrated 16 microphones and two loud speakers, that generate a sound field at specific frequencies, the impedance of the liners can be deduced using an inverse analytical method.
 In this context, inverse analytical method means to deduce the acoustical impedance by measuring the sound field in a mean flow, in front of and after the lined section.
 Therefore, 3 microphones and one speaker are placed respectively in front of and after the lined section, whereas the remaining 10 microphones face the liner.
 The method is a non destructive method ensuring the liners further usage.
 The governing relations between the measured pressures and how to determine the impedance is going to be given in more detail subsequently.
 
-
 \subsection{The wave equation and its solutions}
-\fxnote{Give references to the literature where you have taken the equations from}
+The following sections and equations are based on the phD thesis \textit{Modelling and Characterization of Perforates in Lined Ducts and Mufflers} by Elnady \cite{Elnady2004} and the course book \textit{An Introduction to Flow Acoustics} by Åbom \cite{Abom2010}.\\ 
 Acoustic phenomena are based on wave propagation. As a consequence the governing equation is called the wave equation and is of the form: 
 
 \begin{equation}
@@ -285,7 +288,6 @@ p(\textbf{x},t)=p^{-}e^{i(\omega t-k\textbf{x})}+p^{+}e^{i(\omega t+k\textbf{x})
 with x the propagation vector. 
 
 \subsection{Case of a rectangular duct}
-
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{./Figures/schematic_problem}
@@ -328,7 +330,6 @@ Whereas in our model including the mean flow $U$, the impedance is calculated us
 \end{figure}
 
 In axial direction the wavenumber is obtained by inserting the ansatz of the form: 
-
 \begin{equation}
 Z(z)\propto e^{-ik_z}
 \end{equation}  
@@ -396,7 +397,7 @@ Summarizing, the prony method aims to recover analytically the pairwise differen
 In order to calculate the algebraic solution with least effort, it is necessary, that first the spacing of the sampled pressure $p(z)$ fulfils the Shannon-Nyquist theorem $\frac{4\pi}{spacing}>k_z$ and second that the data points are provided at an equispaced grid.
 When the factors $c_j$ and $k_z^j$ are known, they can be related to the acoustic impedance with the previous equations (\ref{eqn: Impdet1})(\ref{eqn: Impdet2})
  
-Beside the prony methods exist various other prony like methods to recover the signal paramters like the Esprit method (Estimation of Signal Prarametersvcia rotational Invariance Techniques) or the matrix pencil method described by \cite{Potts}.
+Beside the prony methods exist various other prony like methods to recover the signal paramters like the Esprit method (Estimation of Signal Prarametersvcia rotational Invariance Techniques) or the matrix pencil method described by \cite{Peter2011}.
 
 \section{Problem: Facing uncertainties}
 As measured data is always accompanied by uncertainties, it is also of importance to fit the uncertainty analysis into the basic modelling process.
@@ -578,7 +579,7 @@ Whereas the second section deals with the results of applying the algorithm to e
  
 \section{Numerical experiments}
 Since two different variations of the equispacing algorithm exist, it was a necessary step to analyse the numerical behaviour of both variants.
-A test class with possible numbers of scenerios equations was implemented, where the  
+A test class with possible numbers of scenarios equations was implemented, where the  
 algorithm could be verified under realistic acoustical waves and under a nonequispaced grid.
 In essence, the test makes use of a simple known steady wave equation of the form
 
@@ -611,7 +612,7 @@ In comparison to the first plot, the second plot provides information about the 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{./Figures/plot_trunc}
-\caption{results of using the gaussian bell with the parameters $b=12.3$}
+\caption{results of using the Gaussian bell with the parameters $b=12.3$}
 \end{figure}
 
 This plot shows as the first example the reconstructed function of complex pressures approximated at equispaced steps, separated in real and complex part.
@@ -637,7 +638,7 @@ The real part is shown on the left side, whereas the imaginary part is shown on 
 So this clarifies, that the algorithm provides a solution to include additional information to the experimental data like uncertainties.
 It is also adaptable to existing algorithms. 
 
- 
+\newpage
 \section{Conclusion}
 On the scientific point of view, on may conclude, that the equispacing algorithm fulfils successfully the stated requirements and goals.
 It has been shown that it provides quite a robust solution to the approximation problem of a function given on a non equispaced grid. 
@@ -696,8 +697,7 @@ I really enjoyed being part of great team and the interesting IMAGE project.
 %\end{figure}
 
 
-\cite{Peter2011}
-\cite{Mungur1969}
+\addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
 
 
